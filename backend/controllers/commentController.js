@@ -4,7 +4,7 @@ import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 
 // New coment => /api/v1/comment/new POST*****
 export const createComment = catchAsyncErrors(async (req, res, next) => {
-  const postId = req.params.id;
+  const postId = req.body.postId;
 
   const { body } = req.body;
 
@@ -23,14 +23,13 @@ export const createComment = catchAsyncErrors(async (req, res, next) => {
 
 // Update comment => /api/v1/comment/:id PUT****
 export const updateComment = catchAsyncErrors(async (req, res, next) => {
-  const postId = req.params.id;
+  const postId = req.body.postId;
 
   const { body, commentId } = req.body;
 
   const newComment = {
     body,
     author: req.user._id,
-    post: postId,
   };
 
   const comment = await Comment.findByIdAndUpdate(commentId, newComment, {

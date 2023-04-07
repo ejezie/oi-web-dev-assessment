@@ -9,12 +9,12 @@ import { isAuthenticatedUser, authorizeRoles } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.post("/api/v1/comment/new", isAuthenticatedUser, createComment);
-router.put("/api/v1/comment/:id", isAuthenticatedUser, updateComment);
-router.delete("/api/v1/comment/:id", isAuthenticatedUser, deleteComment);
+router.post("/comment/new", isAuthenticatedUser, createComment);
+router.put("/comment/:id", isAuthenticatedUser, updateComment);
+router.delete("/comment/:id", isAuthenticatedUser, deleteComment);
 
 router.get(
-  "/api/v1/comment/:id",
+  "/admin/comments",
   isAuthenticatedUser,
   authorizeRoles("admin"),
   getAllComments
