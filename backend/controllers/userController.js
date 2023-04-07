@@ -1,28 +1,25 @@
-import User from '../models/userModel.js'
-import catchAsyncErrors from '../middlewares/catchAsyncErrors.js'
-import ErrorHandler from '../utils/errorHandler.js'
-import sendJwtToken from '../utils/sendJwtToken.js'
+import User from "../models/userModel.js";
+import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
+import ErrorHandler from "../utils/errorHandler.js";
+import sendJwtToken from "../utils/sendJwtToken.js";
 
 // Create a new user => /api/v1/register/ *****
-export const createUser = catchAsyncErrors( async (req, res, next) => {
+export const createUser = catchAsyncErrors(async (req, res, next) => {
   const { name, email, password } = req.body;
 
   const user = await User.findOne({ email: email });
 
-  if(!user){
-
+  if (!user) {
     const newUser = await User.create({
-        name,
-        email,
-        password,
+      name,
+      email,
+      password,
     });
-    sendJwtToken(newUser, 200, res)
-
-  }else{
-    return next(new ErrorHandler("User already exists", 400))
+    sendJwtToken(newUser, 200, res);
+  } else {
+    return next(new ErrorHandler("User already exists", 400));
   }
-
-})
+});
 
 // Login existing user => /api/v1/login *****
 export const loginUser = catchAsyncErrors(async (req, res, next) => {
@@ -76,7 +73,11 @@ export const updatePassword = catchAsyncErrors(async (req, res, next) => {
   const VerifyPassword = await user.isPasswordMatch(req.body.oldPassword);
 
   if (!VerifyPassword) {
-    return next(new ErrorHandler("Old password does not match", 400));
+    return next(new ErrorHandler("Your old password is incorrect", 400));
+  }
+
+  if (req.body.newPassword !== req.body.confirmPassword){
+    return next(new ErrorHandler("New password and confirm Password does not match", 400));
   }
 
   user.password = req.body.newPassword;
@@ -87,8 +88,7 @@ export const updatePassword = catchAsyncErrors(async (req, res, next) => {
 // Update user details/profile => api/v1/me/update ****
 export const updateUserProfile = catchAsyncErrors(async (req, res, next) => {
   const newUserDetails = {
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
+    name: req.body.name,
     email: req.body.email,
   };
 
@@ -96,55 +96,27 @@ export const updateUserProfile = catchAsyncErrors(async (req, res, next) => {
     new: true,
     runValidators: true,
     useFindAndModify: false,
-  });
+  })
+    .populate("posts")
+    .populate("comments");
 
   res.status(200).json({
     success: true,
     user,
   });
 });
-
 
 // ADMIN ROUTES ********************************
 
 // Get specific user => api/v1/admin/users/:id ****
-export const getOneUser = catchAsyncErrors(async (req, res, next)=> {
-    const {id} = req.params
+export const getOneUser = catchAsyncErrors(async (req, res, next) => {
+  const { id } = req.params;
 
-    const user = await User.findById(id);
+  const user = await User.findById(id);
 
-    if (!user) {
-        return next(new ErrorHandler("User not found", 404));
-    }
-
-    res.status(200).json({
-        success: true,
-        user
-    });
-})
-
-// Get all users => api/v1/admin/users ****
-export const getAllUsers = catchAsyncErrors(async (req, res, next) => {
-  const users = await User.find()
-  res.status(200).json({
-    success: true,
-    users,
-  })
-});
-
-// Update user details/profile ADMIN => api/v1/admin/user/:id ****
-export const updateUserProfileAdmin = catchAsyncErrors(async (req, res, next) => {
-  const newUserDetails = {
-    name: req.body.name,
-    email: req.body.email,
-    role: req.body.role,
-  };
-
-  const user = await User.findByIdAndUpdate(req.params.id, newUserDetails, {
-    new: true,
-    runValidators: true,
-    useFindAndModify: false,
-  });
+  if (!user) {
+    return next(new ErrorHandler("User not found", 404));
+  }
 
   res.status(200).json({
     success: true,
@@ -152,17 +124,46 @@ export const updateUserProfileAdmin = catchAsyncErrors(async (req, res, next) =>
   });
 });
 
+// Get all users => api/v1/admin/users ****
+export const getAllUsers = catchAsyncErrors(async (req, res, next) => {
+  const users = await User.find();
+  res.status(200).json({
+    success: true,
+    users,
+  });
+});
+
+// Update user details/profile ADMIN => api/v1/admin/user/:id ****
+export const updateUserProfileAdmin = catchAsyncErrors(
+  async (req, res, next) => {
+    const newUserDetails = {
+      name: req.body.name,
+      email: req.body.email,
+      role: req.body.role,
+    };
+
+    const user = await User.findByIdAndUpdate(req.params.id, newUserDetails, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }).populate("comments").populate("posts")
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  }
+);
 
 // Delete user details/profile ADMIN => api/v1/admin/user/:id ****
 export const deleteUser = catchAsyncErrors(async (req, res, next) => {
-  
   const user = await User.findById(req.params.id);
 
-  if(!user){
-    return next(new ErrorHandler(`User with id ${req.params.id} not found`))
+  if (!user) {
+    return next(new ErrorHandler(`User with id ${req.params.id} not found`));
   }
 
-  await user.remove()
+  await user.remove();
 
   res.status(200).json({
     success: true,
