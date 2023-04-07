@@ -16,14 +16,13 @@ const postSchema = new Schema({
     ref: 'User',
     required: true
   },
-  categories: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Categories',
+  category: {
+    type: String,
     required: true
-  }],
+  },
   tags: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Tag'
+    type: String,
+    require: true,
   }],
   comments: [{
     type: Schema.Types.ObjectId,

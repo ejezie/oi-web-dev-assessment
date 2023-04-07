@@ -6,6 +6,7 @@ import errorMiddleWare from "./middlewares/error.js";
 import { dbConnect } from "./config/dbConnect.js";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
+import commentRoutes from "./routes/commentRoutes.js";
 
 // Set up env configuration
 dotenv.config({
@@ -41,6 +42,7 @@ app.use(cookieParser());
 
 app.use("/api/v1/", userRoutes);
 app.use("/api/v1/", postRoutes);
+app.use("/api/v1/", commentRoutes);
 
 // Error handling middleware
 app.use(errorMiddleWare);

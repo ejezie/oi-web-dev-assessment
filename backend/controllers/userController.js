@@ -4,7 +4,7 @@ import ErrorHandler from '../utils/errorHandler.js'
 import sendJwtToken from '../utils/sendJwtToken.js'
 
 // Create a new user => /api/v1/register/ *****
-export const register = catchAsyncErrors( async (req, res, next) => {
+export const createUser = catchAsyncErrors( async (req, res, next) => {
   const { name, email, password } = req.body;
 
   const user = await User.findOne({ email: email });
@@ -58,13 +58,113 @@ export const logoutUser = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// All users => /api/v1/users
-export const allUsers = catchAsyncErrors(async (req, res, next) => {
-
-  const users = await User.find();
+// Get currently logged in user details/profile => api/v1/me ****
+export const getUserProfile = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
 
   res.status(200).json({
     success: true,
-    data: users,
+    user,
+  });
+});
+
+// Update password => api/v1/password/update ****
+export const updatePassword = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select("+password");
+
+  // Verify old password is correct
+  const VerifyPassword = await user.isPasswordMatch(req.body.oldPassword);
+
+  if (!VerifyPassword) {
+    return next(new ErrorHandler("Old password does not match", 400));
+  }
+
+  user.password = req.body.newPassword;
+  await user.save();
+  sendJwtToken(user, 200, res);
+});
+
+// Update user details/profile => api/v1/me/update ****
+export const updateUserProfile = catchAsyncErrors(async (req, res, next) => {
+  const newUserDetails = {
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    email: req.body.email,
+  };
+
+  const user = await User.findByIdAndUpdate(req.user.id, newUserDetails, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
+
+
+// ADMIN ROUTES ********************************
+
+// Get specific user => api/v1/admin/users/:id ****
+export const getOneUser = catchAsyncErrors(async (req, res, next)=> {
+    const {id} = req.params
+
+    const user = await User.findById(id);
+
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+    }
+
+    res.status(200).json({
+        success: true,
+        user
+    });
+})
+
+// Get all users => api/v1/admin/users ****
+export const getAllUsers = catchAsyncErrors(async (req, res, next) => {
+  const users = await User.find()
+  res.status(200).json({
+    success: true,
+    users,
+  })
+});
+
+// Update user details/profile ADMIN => api/v1/admin/user/:id ****
+export const updateUserProfileAdmin = catchAsyncErrors(async (req, res, next) => {
+  const newUserDetails = {
+    name: req.body.name,
+    email: req.body.email,
+    role: req.body.role,
+  };
+
+  const user = await User.findByIdAndUpdate(req.params.id, newUserDetails, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
+
+
+// Delete user details/profile ADMIN => api/v1/admin/user/:id ****
+export const deleteUser = catchAsyncErrors(async (req, res, next) => {
+  
+  const user = await User.findById(req.params.id);
+
+  if(!user){
+    return next(new ErrorHandler(`User with id ${req.params.id} not found`))
+  }
+
+  await user.remove()
+
+  res.status(200).json({
+    success: true,
   });
 });

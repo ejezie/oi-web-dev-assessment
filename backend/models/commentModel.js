@@ -3,24 +3,24 @@ import mongoose from 'mongoose';
 const {Schema, model} = mongoose
 
 const commentSchema = new Schema({
-  content: {
+  body: {
     type: String,
-    required: true
+    required: true,
   },
   author: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
   },
   post: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Post',
-    required: true
+    required: true,
   },
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-export default model("Post", postSchema)
+export default model('Comment', commentSchema);

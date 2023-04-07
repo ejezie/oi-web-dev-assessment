@@ -1,15 +1,16 @@
 import Post from "../models/postModel.js";
+import Comment from "../models/commentModel.js";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../utils/errorHandler.js";
 
 // New post => /api/v1/post/new POST*****
 export const createPost = catchAsyncErrors(async (req, res, next) => {
-  const { title, content, author, category, tags } = req.body;
+  const { title, content, category, tags } = req.body;
 
   const post = await Post.create({
     title,
     content,
-    author,
+    author: req.user.id,
     category,
     tags,
   });
@@ -25,8 +26,6 @@ export const createPost = catchAsyncErrors(async (req, res, next) => {
 export const allPosts = catchAsyncErrors(async (req, res, next) => {
   const posts = await Post.find()
     .populate("author")
-    .populate("categories")
-    .populate("tags")
     .populate("comments");
 
   res.status(200).json({
@@ -35,23 +34,24 @@ export const allPosts = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// All single post => /api/v1/post/:id  GET*****
+// Get single post => /api/v1/post/:id  GET*****
 export const getSinglePost = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
 
   const post = await Post.findById(id)
     .populate("author")
-    .populate("categories")
-    .populate("tags")
     .populate("comments");
 
   if (!post) {
     return next(new ErrorHandler("Post not found", 404));
   }
 
+  const comments = await Comment.find({post: id}).populate("author");
+
   res.status(200).json({
     success: true,
     data: post,
+    comments,
   });
 });
 
@@ -62,10 +62,9 @@ export const updatePost = catchAsyncErrors(async (req, res, next) => {
   const post = await Post.findByIdAndUpdate(id, req.body, {
     new: true,
     runValidators: true,
+    useFindAndModify: false,
   })
     .populate("author")
-    .populate("categories")
-    .populate("tags")
     .populate("comments");
 
     if(!post) {
