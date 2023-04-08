@@ -2,6 +2,7 @@ import User from "../models/userModel.js";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import sendJwtToken from "../utils/sendJwtToken.js";
+import cloudinary from 'cloudinary';
 
 // Create a new user => /api/v1/register/ *****
 export const createUser = catchAsyncErrors(async (req, res, next) => {
@@ -9,11 +10,23 @@ export const createUser = catchAsyncErrors(async (req, res, next) => {
 
   const user = await User.findOne({ email: email });
 
+
   if (!user) {
+
+    const resultUserAvarter = await cloudinary.v2.uploader.upload(req.body.avarter, {
+      folder: 'avarters',
+      width: 150,
+      crop: 'scale',
+    })
+
     const newUser = await User.create({
       name,
       email,
       password,
+      avarter: {
+        public_id: resultUserAvarter.public_id,
+        url: resultUserAvarter.secure_url
+      },
     });
     sendJwtToken(newUser, 200, res);
   } else {
@@ -76,8 +89,10 @@ export const updatePassword = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Your old password is incorrect", 400));
   }
 
-  if (req.body.newPassword !== req.body.confirmPassword){
-    return next(new ErrorHandler("New password and confirm Password does not match", 400));
+  if (req.body.newPassword !== req.body.confirmPassword) {
+    return next(
+      new ErrorHandler("New password and confirm Password does not match", 400)
+    );
   }
 
   user.password = req.body.newPassword;
@@ -146,7 +161,9 @@ export const updateUserProfileAdmin = catchAsyncErrors(
       new: true,
       runValidators: true,
       useFindAndModify: false,
-    }).populate("comments").populate("posts")
+    })
+      .populate("comments")
+      .populate("posts");
 
     res.status(200).json({
       success: true,

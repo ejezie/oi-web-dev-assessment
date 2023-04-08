@@ -27,6 +27,16 @@ const userSchema = new Schema({
     type: String,
     default: "user",
   },
+  avarter: {
+    public_id: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      required: true,
+    },
+  },
   posts: [
     {
       type: Schema.Types.ObjectId,
@@ -44,7 +54,7 @@ const userSchema = new Schema({
     default: Date.now,
   },
   resetPasswordToken: String,
-  resetPasswordExpire: Date
+  resetPasswordExpire: Date,
 });
 
 // Save hashed password to database

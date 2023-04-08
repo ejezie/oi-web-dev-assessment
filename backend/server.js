@@ -3,6 +3,8 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import errorMiddleWare from "./middlewares/error.js";
+import bodyParser from "body-parser";
+import cloudinary from 'cloudinary'
 import { dbConnect } from "./config/dbConnect.js";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
@@ -39,6 +41,14 @@ const app = express();
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Setting up cloudinary configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 app.use("/api/v1/", userRoutes);
 app.use("/api/v1/", postRoutes);
