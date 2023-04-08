@@ -1,12 +1,13 @@
 import "./App.css";
+import { BrowserRouter } from "react-router-dom";
+import RouterConfig from "./routes/routesConfig";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        {/* Starter file */}
-        <h3>Oaks Intelligence Web Based Assessment.</h3>
-      </header>
+      <BrowserRouter>
+          <RouterConfig />
+      </BrowserRouter>
     </div>
   );
 }
