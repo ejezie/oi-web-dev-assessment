@@ -2,6 +2,7 @@ import express from "express";
 // import app from "./app.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import cors from 'cors'
 import errorMiddleWare from "./middlewares/error.js";
 import bodyParser from "body-parser";
 import cloudinary from 'cloudinary'
@@ -38,10 +39,17 @@ const ENV = process.env.NODE_ENV || "DEVELOPMENT";
 
 const app = express();
 
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001'];
+const corsOptions = {
+  origin: allowedOrigins,
+  optionsSuccessStatus: 200, 
+};
+
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors(corsOptions))
 
 // Setting up cloudinary configuration
 cloudinary.config({

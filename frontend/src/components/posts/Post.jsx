@@ -13,9 +13,6 @@ const Posts = () => {
     (state) => state.post
   );
 
-  console.log(isLoading);
-  console.log(postsData);
-
   React.useEffect(() => {
     
     dispatch(getPosts());
@@ -24,7 +21,7 @@ const Posts = () => {
   return (
     <Container>
       <div className="latest-posts-container left column">
-        <div className="latest-product-sub sub-heading">Latest Posts</div>
+        <div className="latest-posts-sub sub-heading">Latest Posts</div>
         {isLoading ? (
           <div className="spinner center">
             <ThreeDots
@@ -41,9 +38,9 @@ const Posts = () => {
         ) : (
           <div className="posts-container space-between wrap">
             {postsData &&
-              postsData.map((product) => (
-                <div className="product-item" key={product?._id}>
-                  <PostItem data={product} />
+              postsData?.data?.map((post) => (
+                <div className="product-item" key={post?._id}>
+                  <PostItem post={post} />
                 </div>
               ))}
           </div>

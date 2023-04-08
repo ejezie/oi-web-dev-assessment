@@ -5,8 +5,9 @@ import { formatErrorResponse } from "../../utils";
 
 export const getPosts = createAsyncThunk("posts", async () => {
   try {
-    const { data } = PostService.getAllPosts();
-    return data;
+    const response = PostService.getAllPosts();
+    return response;
+
   } catch (error) {
     return formatErrorResponse(error);
   }
@@ -14,7 +15,7 @@ export const getPosts = createAsyncThunk("posts", async () => {
 
 
 const initialState = {
-    isLoading: false,
+    isLoading: true,
     postsData: []
 }
 
@@ -28,7 +29,7 @@ const postSlice = createSlice({
         });
         builder.addCase(getPosts.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.postsData = action.payload
+            state.postsData = action.payload.data
         });
         builder.addCase(getPosts.rejected, (state, action) => {
             state.isLoading = false;
