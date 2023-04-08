@@ -1,0 +1,99 @@
+$orange: #eda415;
+$blue: #003f62;
+$black: #4a4a4a;
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  // overflow-x: hidden;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 767px) {
+    justify-content: center !important;
+    align-items: center !important;
+  }
+}
+
+.space-around {
+  @extend .center;
+  justify-content: space-around;
+}
+
+.space-between {
+  @extend .center;
+  justify-content: space-between;
+}
+
+.between {
+  @extend .center;
+  justify-content: space-between !important;
+}
+
+.left {
+  @extend .center;
+  justify-content: start;
+  align-items: start;
+}
+
+.right {
+  @extend .center;
+  align-items: end;
+  justify-content: end;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.max-width {
+  max-width: 1440px;
+  width: 100%;
+}
+
+.link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sub-heading {
+  font-size: 27px;
+  font-weight: 600;
+  line-height: 41px;
+  color: $blue;
+
+  @media (max-width: 767px) {
+    font-size: 22px;
+  }
+}
+
+.none {
+  display: none;
+}
+
+.none-mobile {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.none-desktop {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.block-mobile {
+  @media (max-width: 767px) {
+    display: block;
+  }
+}
