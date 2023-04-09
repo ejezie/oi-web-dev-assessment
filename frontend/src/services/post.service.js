@@ -9,7 +9,6 @@ import {
 } from "./CONSTANTS";
 
 export const getAllPosts = async () => {
-  try {
     const config = {
       url: `${devEnv.API_BASE_URL}${GET_ALL_POSTS}`,
       method: "get",
@@ -18,9 +17,6 @@ export const getAllPosts = async () => {
       },
     };
 
-    const response = await axios(config);
-    return response;
-  } catch (error) {
-    return error;
-  }
+    return await axios(config);
+   
 };

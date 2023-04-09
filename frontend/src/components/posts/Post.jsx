@@ -4,7 +4,7 @@ import Container from "../layout/Container/Container";
 import PostItem from "./post-item/PostItem";
 import { useSelector, useDispatch } from "react-redux";
 import { ThreeDots } from "react-loader-spinner";
-import {getPosts} from "../../redux/slices/post.slice"
+import {getPostsAction} from "../../redux/slices/post.slice"
 
 const Posts = () => {
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const Posts = () => {
 
   React.useEffect(() => {
     
-    dispatch(getPosts());
+    dispatch(getPostsAction());
   }, [dispatch]);
 
   return (

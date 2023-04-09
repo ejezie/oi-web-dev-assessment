@@ -2,54 +2,46 @@ import axios from "axios";
 import { LOGIN, LOG_OUT, REGISTER } from "./CONSTANTS";
 import { devEnv } from "../configs/environment.config";
 
-export const login = async (email, password) => {
+export const login = (email, password) => {
   const config = {
+    url: `${devEnv.API_BASE_URL}${LOGIN}`,
+    method: "post",
     headers: {
       "Content-Type": "application/json",
     },
+    data: {
+      email,
+      password,
+    },
   };
-
-  return await axios
-    .post(`${devEnv.API_BASE_URL}/${LOGIN}`, { email, password }, config)
-    .then((res) => {
-      const data = res.data;
-      return data;
-    })
-    .catch((err) => {
-      return err.message;
-    });
+  return axios(config);
 };
 
-export const register = async (name, email, password) => {
+export const register = (name, email, password) => {
   const config = {
+    url: `${devEnv.API_BASE_URL}${REGISTER}`,
+    method: "post",
     headers: {
       "Content-Type": "application/json",
     },
+    data: {
+      name,
+      email,
+      password,
+    },
   };
 
-  return await axios
-    .post(
-      `${devEnv.API_BASE_URL}/${REGISTER}`,
-      { email, password, name },
-      config
-    )
-    .then((res) => {
-      const data = res.data;
-      return data;
-    });
+    return axios(config);
 };
 
-export const logout = async () => {
+export const logout = () => {
   const config = {
+    url: `${devEnv.API_BASE_URL}${LOG_OUT}`,
+    method: "get",
     headers: {
       "Content-Type": "application/json",
     },
   };
 
-  return await axios
-    .post(`${devEnv.API_BASE_URL}/${LOG_OUT}`, {}, config)
-    .then((res) => {
-      const data = res.data;
-      return data;
-    });
+  return axios(config);
 };

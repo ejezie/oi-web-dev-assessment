@@ -6,6 +6,7 @@ import cors from 'cors'
 import errorMiddleWare from "./middlewares/error.js";
 import bodyParser from "body-parser";
 import cloudinary from 'cloudinary'
+import fileUpload from "express-fileupload";
 import { dbConnect } from "./config/dbConnect.js";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
@@ -52,12 +53,13 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions))
+app.use(fileUpload())
 
 // Setting up cloudinary configuration
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  api_secret: process.env.CLOUDINARY_SECRET_KEY,
 });
 
 app.use("/api/v1/", userRoutes);
