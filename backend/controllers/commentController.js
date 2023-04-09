@@ -4,17 +4,21 @@ import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 
 // New coment => /api/v1/comment/new POST*****
 export const createComment = catchAsyncErrors(async (req, res, next) => {
-  const postId = req.body.postId;
+  // const postId = req.query.postId;
 
   const { body } = req.body;
 
   const comment = await Comment.create({
     body,
     author: req.user._id,
-    post: postId,
+    post: req.params.id,
   });
 
-  res.status(201).json({
+  if(!comment) {
+    return next(new ErrorHandler("Comment creation failed, try again.", 500));
+  }
+
+  res.status(200).json({
     success: true,
     message: "Comment successfully created",
     data: comment,
@@ -23,16 +27,15 @@ export const createComment = catchAsyncErrors(async (req, res, next) => {
 
 // Update comment => /api/v1/comment/:id PUT****
 export const updateComment = catchAsyncErrors(async (req, res, next) => {
-  const postId = req.body.postId;
+  const postId = req.query.postId;
 
-  const { body, commentId } = req.body;
+  const { body } = req.body;
 
   const newComment = {
     body,
-    author: req.user._id,
   };
 
-  const comment = await Comment.findByIdAndUpdate(commentId, newComment, {
+  const comment = await Comment.findByIdAndUpdate(req.params.id, newComment, {
     new: true,
     runValidators: true,
     useFindAndModify: false,
@@ -81,5 +84,31 @@ export const deleteComment = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "comment deleted successfully",
+  });
+});
+
+// Update comment ADMIN => /api/v1/comment/:id PUT****
+export const updateCommentAdmin = catchAsyncErrors(async (req, res, next) => {
+
+  const { body, status } = req.body;
+
+  const newComment = {
+    body,
+    status
+  };
+
+  const comment = await Comment.findByIdAndUpdate(req.params.id, newComment, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+
+  if (!comment) {
+    return next(new ErrorHandler("Comment not found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    data: comment,
   });
 });

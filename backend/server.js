@@ -10,6 +10,8 @@ import { dbConnect } from "./config/dbConnect.js";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
+import tagRoutes from "./routes/tagRoutes.js";
 
 // Set up env configuration
 dotenv.config({
@@ -61,6 +63,8 @@ cloudinary.config({
 app.use("/api/v1/", userRoutes);
 app.use("/api/v1/", postRoutes);
 app.use("/api/v1/", commentRoutes);
+app.use("/api/v1/", categoryRoutes);
+app.use("/api/v1/", tagRoutes);
 
 // Error handling middleware
 app.use(errorMiddleWare);

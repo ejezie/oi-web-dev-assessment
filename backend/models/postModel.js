@@ -1,33 +1,37 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const {Schema, model} = mongoose
+const { Schema, model } = mongoose;
 
 const postSchema = new Schema({
   title: {
     type: String,
-    required: true
+    required: true,
   },
   content: {
     type: String,
-    required: true
+    required: true,
   },
   author: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: "User",
+    required: true,
   },
   category: {
-    type: String,
-    required: true
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
   },
-  tags: [{
-    type: String,
-    require: true,
-  }],
-  comments: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Comment'
-  }],
+  tags: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tag",
+    },
+  ],
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Comment",
+    },
+  ],
   image: {
     public_id: {
       type: String,
@@ -40,8 +44,12 @@ const postSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now
-  }
-}); 
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
-export default model("Post", postSchema)
+export default model("Post", postSchema);

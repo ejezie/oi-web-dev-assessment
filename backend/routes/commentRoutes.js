@@ -4,6 +4,7 @@ import {
   deleteComment,
   getAllComments,
   updateComment,
+  updateCommentAdmin,
 } from "../controllers/commentController.js";
 import { isAuthenticatedUser, authorizeRoles } from "../middlewares/auth.js";
 
@@ -18,6 +19,12 @@ router.get(
   isAuthenticatedUser,
   authorizeRoles("admin"),
   getAllComments
+);
+router.get(
+  "/admin/comment/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  updateCommentAdmin
 );
 
 export default router;

@@ -53,8 +53,10 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  resetPasswordToken: String,
-  resetPasswordExpire: Date,
+ updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 // Save hashed password to database
@@ -79,18 +81,18 @@ userSchema.methods.getJwtToken = function () {
 };
 
 // Generate password reset token
-userSchema.methods.getResetPasswordToken = function () {
-  // Generate the password reset token
-  const resetPasswordToken = crypto.randomBytes(20).toString("hex");
-  this.resetPasswordToken = crypto
-    .createHash("sha256")
-    .update(resetPasswordToken)
-    .digest("hex");
+// userSchema.methods.getResetPasswordToken = function () {
+//   // Generate the password reset token
+//   const resetPasswordToken = crypto.randomBytes(20).toString("hex");
+//   this.resetPasswordToken = crypto
+//     .createHash("sha256")
+//     .update(resetPasswordToken)
+//     .digest("hex");
 
-  // Set reset password token expiration time
-  this.resetPasswordExpire = Date.now() + 30 * 60 * 1000;
+//   // Set reset password token expiration time
+//   this.resetPasswordExpire = Date.now() + 30 * 60 * 1000;
 
-  return resetPasswordToken;
-};
+//   return resetPasswordToken;
+// };
 
 export default model("User", userSchema);
