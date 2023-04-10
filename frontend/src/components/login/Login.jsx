@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Input from "../primitives/Input/Input";
 import Button from "../primitives/Button/Button";
 import { loginAction } from "../../redux/slices/auth.slice";
+import { useNavigate } from "react-router-dom";
 
 
 const Login = () => {
@@ -19,6 +20,7 @@ const Login = () => {
   const {isLoading, isAuthenticated} = useSelector(state => state.auth)
 
 //   console.log(authData, "dataAuth")
+  const navigate = useNavigate()
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -54,6 +56,12 @@ const Login = () => {
       dispatch(loginAction({email: loginData.email, password: loginData.password}));
     }
   };
+
+  React.useEffect(() => {
+    if (isAuthenticated){
+        navigate('/');
+    }
+  }, [dispatch, isAuthenticated, navigate])
 
   return (
     <div className="login-container">

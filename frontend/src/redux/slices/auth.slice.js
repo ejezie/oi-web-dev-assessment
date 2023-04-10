@@ -5,10 +5,13 @@ import { formatErrorResponse } from "../../utils";
 
 export const loginAction = createAsyncThunk(
   "auth/login",
-  async ({email, password}, thunkAPI) => {
+  async ({ email, password }, thunkAPI) => {
     try {
-      console.log(email, password, "em");
       const data = await AuthService.login(email, password);
+      if (data?.data?.token) {
+        localStorage.setItem("token", JSON.stringify(data.data.token));
+      }
+      toast.success("Logged in successfully");
       return data;
     } catch (error) {
       const message = formatErrorResponse(error);
@@ -20,10 +23,13 @@ export const loginAction = createAsyncThunk(
 
 export const registerAction = createAsyncThunk(
   "auth/register",
-  async ({name, email, password}, thunkAPI) => {
+  async ({ name, email, password, avarter }, thunkAPI) => {
     try {
-      const data = await AuthService.register(name, email, password);
-      toast.success(data.message);
+      const data = await AuthService.register(name, email, password, avarter);
+      if (data?.data?.token) {
+        localStorage.setItem("token", JSON.stringify(data.data.token));
+      }
+      toast.success("user created successfully");
       console.log(data, "reg");
       return data;
     } catch (error) {
@@ -40,8 +46,11 @@ export const logoutAction = createAsyncThunk(
   async (thunkAPI) => {
     try {
       const data = await AuthService.logout();
+      if (data?.data) {
+        localStorage.removeItem("token");
+        toast.success("user logged out successfully");
+      }
       console.log(data, "reg");
-      return data;
     } catch (error) {
       const message = formatErrorResponse(error);
       toast.error(message);
@@ -50,10 +59,11 @@ export const logoutAction = createAsyncThunk(
   }
 );
 
-const initialState = {
-  isLoading: false,
-  isAuthenticated: false,
-};
+const token = localStorage.getItem("token");
+
+const initialState = token
+  ? { isAuthenticated: true, isLoading: false }
+  : { isAuthenticated: false, isLoading: false };
 
 const authSlice = createSlice({
   name: "auth",

@@ -46,6 +46,7 @@ const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001'];
 const corsOptions = {
   origin: allowedOrigins,
   optionsSuccessStatus: 200, 
+  credentials: true,
 };
 
 // Middlewares

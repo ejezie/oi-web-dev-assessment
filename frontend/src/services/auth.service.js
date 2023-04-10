@@ -9,6 +9,7 @@ export const login = (email, password) => {
     headers: {
       "Content-Type": "application/json",
     },
+    withCredentials: true,
     data: {
       email,
       password,
@@ -17,20 +18,21 @@ export const login = (email, password) => {
   return axios(config);
 };
 
-export const register = (name, email, password) => {
+export const register = (name, email, password, avarter) => {
   const config = {
     url: `${devEnv.API_BASE_URL}${REGISTER}`,
     method: "post",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "multipart/form-data",
     },
     data: {
       name,
       email,
       password,
+      avarter
     },
+    withCredentials: true,
   };
-
     return axios(config);
 };
 
@@ -41,6 +43,7 @@ export const logout = () => {
     headers: {
       "Content-Type": "application/json",
     },
+    withCredentials: true,
   };
 
   return axios(config);

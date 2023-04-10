@@ -6,7 +6,7 @@ import { formatErrorResponse } from "../../utils";
 export const getPostsAction = createAsyncThunk("posts", async (thunkAPI) => {
   try {
     const data = await PostService.getAllPosts();
-    return data;
+    return data.data;
   } catch (error) {
     const message = formatErrorResponse(error);
     toast.error(message);
@@ -30,11 +30,10 @@ const postSlice = createSlice({
     });
     builder.addCase(getPostsAction.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.postsData = action.payload.data;
+      state.postsData = action.payload;
     });
     builder.addCase(getPostsAction.rejected, (state, action) => {
       state.isLoading = false;
-      state.postsData = [];
     });
   },
 });
