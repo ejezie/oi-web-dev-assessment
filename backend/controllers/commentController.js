@@ -87,7 +87,7 @@ export const deleteComment = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// Update comment ADMIN => /api/v1/comment/:id PUT****
+// Update comment ADMIN => /api/v1/admin/comment/:id PUT****
 export const updateCommentAdmin = catchAsyncErrors(async (req, res, next) => {
 
   const { body, status } = req.body;

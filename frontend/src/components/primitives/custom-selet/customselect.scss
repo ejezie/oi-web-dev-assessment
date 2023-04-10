@@ -1,0 +1,96 @@
+.tag-select {
+    margin-bottom: 1rem;
+    width: 30vw;
+
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    select {
+        display: block;
+        margin-bottom: 0.5rem;
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+        appearance: none;
+        background-color: white;
+        background-repeat: no-repeat;
+        background-position: right 0.5rem center;
+        background-size: 1rem;
+    }
+
+    .tag-chips {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+    }
+
+    .tag-chip {
+        display: flex;
+        align-items: center;
+        background-color: #eee;
+        border-radius: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+
+        span {
+            margin-right: 0.5rem;
+        }
+
+        button {
+            margin-left: 0.5rem;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.125rem;
+            line-height: 1;
+            color: #999;
+            transition: color 0.2s;
+
+            &:hover {
+                color: #333;
+            }
+        }
+    }
+}
+
+.category-select {
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    select {
+        display: block;
+        margin-bottom: 0.5rem;
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+        appearance: none;
+        background-color: white;
+    }
+}
+
+button[type="submit"] {
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    border: none;
+    font-size: 1rem;
+    background-color: #0077cc;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: #005fa3;
+    }
+}

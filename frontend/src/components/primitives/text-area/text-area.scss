@@ -1,0 +1,23 @@
+.custom-input-container {
+  position: relative;
+  width: 80%;
+
+  input {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 100%;
+  }
+
+  .area {
+    @extend input;
+    height: 300px;
+  }
+
+  .error {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    font-size: 14px;
+    color: red;
+  }
+}

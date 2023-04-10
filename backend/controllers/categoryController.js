@@ -43,7 +43,7 @@ export const updateCategory = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: Category,
+    category,
   });
 });
 
@@ -64,13 +64,11 @@ export const getAllCategories = catchAsyncErrors(async (req, res, next) => {
 // Delete Category => /api/v1/Category/:id Delete****
 export const deleteCategory = catchAsyncErrors(async (req, res, next) => {
 
-  const category = await Category.findByIdAnd(req.params.id);
+  const category = await Category.findByIdAndRemove(req.params.id);
 
   if (!category) {
     return next(new ErrorHandler("Category not found", 404));
   }
-
-  category.remove();
 
   res.status(200).json({
     success: true,

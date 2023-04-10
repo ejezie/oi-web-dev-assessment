@@ -68,11 +68,21 @@ body {
 .sub-heading {
   font-size: 27px;
   font-weight: 600;
-  line-height: 41px;
+  line-height: 31px;
   color: $blue;
 
   @media (max-width: 767px) {
     font-size: 22px;
+  }
+}
+.text {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 31px;
+  color: $blue;
+
+  @media (max-width: 767px) {
+    font-size: 12px;
   }
 }
 
@@ -96,4 +106,10 @@ body {
   @media (max-width: 767px) {
     display: block;
   }
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

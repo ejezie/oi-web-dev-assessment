@@ -15,11 +15,10 @@ router.put("/comment/:id", isAuthenticatedUser, updateComment);
 router.delete("/comment/:id", isAuthenticatedUser, deleteComment);
 
 router.get(
-  "/admin/comments",
-  isAuthenticatedUser,
-  authorizeRoles("admin"),
+  "/comments",
   getAllComments
 );
+
 router.get(
   "/admin/comment/:id",
   isAuthenticatedUser,

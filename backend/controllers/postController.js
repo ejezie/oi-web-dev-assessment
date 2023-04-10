@@ -4,6 +4,7 @@ import Comment from "../models/commentModel.js";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import cloudinary from "cloudinary";
+import APIQueries from "../utils/apiQuries.js";
 
 // New post => /api/v1/post/new POST*****
 export const createPost = catchAsyncErrors(async (req, res, next) => {
@@ -43,10 +44,12 @@ export const createPost = catchAsyncErrors(async (req, res, next) => {
 
 // All post => /api/v1/posts GET*****
 export const allPosts = catchAsyncErrors(async (req, res, next) => {
-  const posts = await Post.find()
+  const apiQueries = new APIQueries(Post.find(), req.query).search();
+
+  const posts = await apiQueries.query
     .populate("author")
     .populate("comments")
-    .populate("category", "name")
+    .populate("category", "title")
     .populate("tags", "name");
 
   res.status(200).json({
@@ -81,11 +84,11 @@ export const getSinglePost = catchAsyncErrors(async (req, res, next) => {
 // Update post => /api/v1/post/:id PUT****
 export const updatePost = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
+  const tagIds = req.query.tagIds;
 
   const tags = await Tag.find({ _id: { $in: tagIds } });
 
   const { title, content, image } = req.body;
-  const tagIds = req.query.tagIds;
 
   const resultPostImage = await cloudinary.v2.uploader.upload(image, {
     folder: "posts",

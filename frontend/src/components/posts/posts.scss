@@ -1,24 +1,36 @@
-.latest-posts-container {
-    padding: 50px 0;
 
-    .latest-product-sub {
+.latest-posts-container {
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+    .latest-posts-sub {
+        font-size: 30px;
+        font-weight: 600;
         margin-bottom: 20px;
     }
 
     .spinner {
-        width: 100%;
+        margin-top: 50px;
         height: 60vh;
+        width: 100%;
     }
 
     .posts-container {
-        gap: 30px;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 50px;
+        margin-top: 30px;
 
-        .product-item {
-            width: calc(25% - 30px);
+        @media only screen and (min-width: 768px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
 
-            @media (max-width: 767px) {
-                width: calc(50% - 30px);
-            }
+        @media only screen and (min-width: 1024px) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .post-item {
+            width: 100%;
         }
     }
 }

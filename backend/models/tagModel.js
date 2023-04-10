@@ -6,12 +6,10 @@ const tagSchema = new Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
   },
   posts: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Post',
-    required: true,
   },
   createdAt: {
     type: Date,

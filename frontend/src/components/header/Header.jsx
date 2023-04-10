@@ -16,13 +16,7 @@ const Header = ({ image }) => {
 
   return (
     <div className="header">
-      <img
-        src={
-          "https://w1.pngwing.com/pngs/964/495/png-transparent-social-media-icons-blog-blogger-symbol-wordpress-blue-text-technology-thumbnail.png"
-        }
-        alt="Home"
-        className="home-logo"
-      />
+      <Link to={"/"} className="link sub-heading">Home</Link>
       <div className="center">
         <img
           src={
@@ -41,7 +35,7 @@ const Header = ({ image }) => {
             >
               Logout
             </Button>
-            <Link to={"/dasboard"} style={{marginLeft: '12px'}} className="link">Dashboard</Link>
+            <Link to={"/dashboard/posts"} style={{marginLeft: '12px'}} className="link">Dashboard</Link>
           </div>
         ) : (
           <Link to={"/login"} className="text">

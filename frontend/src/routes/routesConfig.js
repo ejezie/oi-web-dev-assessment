@@ -1,17 +1,25 @@
 import { Routes, Route } from "react-router-dom";
+
 import {
   Home,
   ErrorPage,
-  
 } from "../pages";
+
 import Login from "../components/login/Login";
 import Register from "../components/register/Register";
-import Dashboard from "../components/dashboard/Dashboard";
+import Category from "../components/dashboard/category/Category";
+import Tags from "../components/dashboard/tags/Tags";
+import Posts from "../components/dashboard/posts/Posts";
+import SinglePost from "../components/single-post/SinglePost";
+
 import {
   HOME,
   REGISTER,
   LOGIN,
-  DASHBOARD,
+  CATEGORY,
+  TAGS,
+  POSTS,
+  POST,
 } from "./CONSTANTS";
 
 import { ProtectedRoutes, PublicRoutes } from "../components/guards";
@@ -22,15 +30,19 @@ const RouterConfig = () => {
       <Routes>
         {/* Public routes should be placed in here */}
         <Route path={HOME} element={<Home />} />
+        <Route path={POST} element={<SinglePost />} />
+
         <Route path="/" element={<PublicRoutes />}>
           {/* Auth pages */}
           <Route path={REGISTER} element={<Register />} />
           <Route path={LOGIN} element={<Login />} />
         </Route>
 
-        <Route path="/" element={<ProtectedRoutes />}>
+        <Route path="/dashboard" element={<ProtectedRoutes />}>
           {/* Protected routes should be placed in here */}
-          <Route path={DASHBOARD} element={<Dashboard />} />
+          <Route path={CATEGORY} element={<Category />} />
+          <Route path={TAGS} element={<Tags />} />
+          <Route path={POSTS} element={<Posts />} />
 
         </Route>
 

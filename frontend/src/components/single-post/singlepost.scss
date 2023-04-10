@@ -1,0 +1,67 @@
+.postView {
+    max-width: 800px;
+    margin: 0 auto;
+
+    .postView-header {
+        height: 400px;
+        overflow: hidden;
+        position: relative;
+
+        .postView-cover {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .postView-body {
+        padding: 32px;
+        background-color: #ffffff;
+
+        .postView-author {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+
+            .postView-avatar {
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                margin-right: 16px;
+                object-fit: cover;
+            }
+
+            .postView-authorName {
+                font-size: 24px;
+                font-weight: 500;
+                color: #444444;
+                margin: 0;
+            }
+
+            .postView-date {
+                font-size: 16px;
+                color: #888888;
+                margin: 0;
+            }
+        }
+
+        .postView-content {
+            margin-top: 32px;
+
+            .postView-title {
+                font-size: 36px;
+                font-weight: 700;
+                color: #444444;
+                margin: 0 0 16px 0;
+            }
+
+            .postView-text {
+                font-size: 20px;
+                line-height: 1.5;
+                color: #444444;
+                margin: 0;
+            }
+        }
+    }
+}
