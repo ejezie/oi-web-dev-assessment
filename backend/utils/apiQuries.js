@@ -6,14 +6,15 @@ class APIQueries {
 
   search() {
   const keyword = this.queryString.keyword
-    ? {
-        name: {
-          $regex: /this.queryString.keyword/,
-          $options: "i",
-        },
-      }
-    : {};
-  this.query = this.query.find({ ...keyword });
+  const regex = new RegExp(keyword, 'i');
+    // ? {
+    //     name: {
+    //       $regex: /this.queryString.keyword/,
+    //       $options: "i",
+    //     },
+    //   }
+    // : {};
+  this.query = this.query.find({content: regex });
   return this;
 }
 
