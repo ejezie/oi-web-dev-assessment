@@ -76,6 +76,19 @@ export const createPost = async (title, content, image, tagIds, categoryId) => {
 
   return await axios(config);
 };
+export const searchPost = async (keyword) => {
+  const config = {
+    url: `${devEnv.API_BASE_URL}${GET_ALL_POSTS}?keyword=${keyword}`,
+    method: "get",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    withCredentials: true,
+  };
+  console.log(keyword, "key")
+
+  return await axios(config);
+};
 
 export const deletePosts = async (id) => {
   const config = {

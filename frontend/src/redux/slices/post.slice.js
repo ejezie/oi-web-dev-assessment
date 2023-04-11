@@ -88,6 +88,21 @@ export const deletePostAction = createAsyncThunk(
   }
 );
 
+export const searchPostAction = createAsyncThunk(
+  "post/search",
+  async (keyword, thunkAPI) => {
+    try {
+      const response = await PostService.searchPost(keyword);
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      const message = formatErrorResponse(error);
+      toast.error(message);
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const initialState = {
   isLoading: true,
   postsData: [],
@@ -121,6 +136,19 @@ const postSlice = createSlice({
       state.postsData = action.payload;
     });
     builder.addCase(singlePostAction.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+    // Search post cases
+    builder.addCase(searchPostAction.pending, (state) => {
+      state.isLoading = true;
+      state.postsData = [];
+    });
+    builder.addCase(searchPostAction.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.postsData = action.payload;
+    });
+    builder.addCase(searchPostAction.rejected, (state) => {
       state.isLoading = false;
     });
 

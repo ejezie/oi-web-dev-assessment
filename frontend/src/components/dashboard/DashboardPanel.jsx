@@ -11,7 +11,6 @@ const DashboardPanel = () => {
           <li><NavLink to={"/dashboard/posts"}>Posts</NavLink></li>
           <li><NavLink to={"/dashboard/tags"}>Tags</NavLink></li>
           <li><NavLink to={"/dashboard/category"}>Categories</NavLink></li>
-          <li><NavLink to={"/dashboard/profile"}>Profile</NavLink></li>
           <li><NavLink to={"/dashboard/admin/comments"}>Admin- Comments</NavLink></li>
         </ul>
       </div>

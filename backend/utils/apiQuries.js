@@ -4,18 +4,18 @@ class APIQueries {
     this.queryString = queryString;
   }
 
-  search() { 
-    const keyword = this.queryString.keyword
-      ? {
-          name: {
-            $regex: this.queryString.keyword,
-            $options: "i",
-          },
-        }
-      : {};
-    this.query = this.query.find({ ...keyword });
-    return this;
-  }
+  search() {
+  const keyword = this.queryString.keyword
+    ? {
+        name: {
+          $regex: /this.queryString.keyword/,
+          $options: "i",
+        },
+      }
+    : {};
+  this.query = this.query.find({ ...keyword });
+  return this;
+}
 
   filter() {
     const queryCopy = { ...this.queryString };
