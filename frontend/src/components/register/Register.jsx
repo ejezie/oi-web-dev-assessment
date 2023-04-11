@@ -5,6 +5,9 @@ import Input from "../primitives/Input/Input";
 import ImageUploadInput from "../primitives/Image-upload-input/ImageUploadInput";
 import Button from "../primitives/Button/Button";
 import "./register.scss";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +22,9 @@ const Register = () => {
 
   const dispatch = useDispatch();
   const { isLoading, isAuthenticated } = useSelector((state) => state.auth);
+
+  const navigate = useNavigate();
+
 
   // Prepare form data for POST request
   const form = new FormData();
@@ -83,11 +89,19 @@ const Register = () => {
     }
   };
 
+  
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [dispatch, isAuthenticated, navigate]);
+
   return (
     <div className="register-container">
-      <h2>Register</h2>
-      <form onSubmit={handleFormSubmit}>
+      <h2 className="register-heading">Register</h2>
+      <form className="register-form" onSubmit={handleFormSubmit}>
         <Input
+          className="register-input"
           type="text"
           name="name"
           label="Name"
@@ -97,6 +111,7 @@ const Register = () => {
           error={errors.name}
         />
         <Input
+          className="register-input"
           type="text"
           name="email"
           label="Email"
@@ -106,6 +121,7 @@ const Register = () => {
           error={errors.email}
         />
         <Input
+          className="register-input"
           type="password"
           name="password"
           label="Password"
@@ -114,14 +130,18 @@ const Register = () => {
           onChange={handleInputChange}
           error={errors.password}
         />
-        <div>
-          <ImageUploadInput setImageFile={handleSetImage} errorMessage={errors.image}/>
+        <div className="register-image-upload">
+          <ImageUploadInput
+            setImageFile={handleSetImage}
+            errorMessage={errors.image}
+          />
         </div>
 
-        <Button isLoading={isLoading} type="submit">
+        <Button className="register-button" isLoading={isLoading} type="submit">
           Submit
         </Button>
       </form>
+      <Link to={"/"}>Home</Link>
     </div>
   );
 };

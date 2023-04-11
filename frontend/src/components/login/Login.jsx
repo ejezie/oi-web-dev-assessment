@@ -5,10 +5,9 @@ import Input from "../primitives/Input/Input";
 import Button from "../primitives/Button/Button";
 import { loginAction } from "../../redux/slices/auth.slice";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 
 const Login = () => {
-
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -16,11 +15,11 @@ const Login = () => {
 
   const [errors, setErrors] = useState({});
 
-  const dispatch = useDispatch()
-  const {isLoading, isAuthenticated} = useSelector(state => state.auth)
+  const dispatch = useDispatch();
+  const { isLoading, isAuthenticated } = useSelector((state) => state.auth);
 
-//   console.log(authData, "dataAuth")
-  const navigate = useNavigate()
+  //   console.log(authData, "dataAuth")
+  const navigate = useNavigate();
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -53,21 +52,24 @@ const Login = () => {
 
     // If no errors, submit the form
     if (Object.keys(errors).length === 0) {
-      dispatch(loginAction({email: loginData.email, password: loginData.password}));
+      dispatch(
+        loginAction({ email: loginData.email, password: loginData.password })
+      );
     }
   };
 
   React.useEffect(() => {
-    if (isAuthenticated){
-        navigate('/');
+    if (isAuthenticated) {
+      navigate("/");
     }
-  }, [dispatch, isAuthenticated, navigate])
+  }, [dispatch, isAuthenticated, navigate]);
 
   return (
     <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleFormSubmit}>
+      <h2 className="login-heading">Login</h2>
+      <form className="login-form" onSubmit={handleFormSubmit}>
         <Input
+          className="login-input"
           type="text"
           name="email"
           label="Email"
@@ -77,6 +79,7 @@ const Login = () => {
           error={errors.email}
         />
         <Input
+          className="login-input"
           type="password"
           name="password"
           label="Password"
@@ -85,8 +88,14 @@ const Login = () => {
           onChange={handleInputChange}
           error={errors.password}
         />
-        <Button isLoading={isLoading} type="submit">Submit</Button>
+        <Button className="login-button" isLoading={isLoading} type="submit">
+          Submit
+        </Button>
       </form>
+      <Link className="signup-link" to={"/register"}>
+        Dont have an account? Sign Up
+      </Link>
+      <Link to={"/"}>Home</Link>
     </div>
   );
 };
